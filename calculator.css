@@ -1,0 +1,294 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.calculator {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    width: 100%;
+    max-width: 450px;
+}
+
+.display {
+    margin-bottom: 20px;
+    background: #f0f0f0;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+#display {
+    width: 100%;
+    padding: 20px;
+    font-size: 2.5em;
+    text-align: right;
+    border: none;
+    background: #f0f0f0;
+    border-radius: 10px;
+    color: #333;
+    font-weight: 600;
+    outline: none;
+}
+
+.button-group {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.btn {
+    padding: 15px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.number-btn {
+    background: #e9ecef;
+    color: #333;
+}
+
+.number-btn:hover {
+    background: #dee2e6;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.function-btn {
+    background: #667eea;
+    color: white;
+}
+
+.function-btn:hover {
+    background: #5568d3;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.equals-btn {
+    background: #51cf66;
+    color: white;
+    grid-column: span 2;
+}
+
+.equals-btn:hover {
+    background: #40c057;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(81, 207, 102, 0.4);
+}
+
+.advanced-btn {
+    background: #ff922b;
+    color: white;
+    font-size: 1em;
+}
+
+.advanced-btn:hover {
+    background: #fd7e14;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 146, 43, 0.4);
+}
+
+.info {
+    text-align: center;
+    color: white;
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+@media (max-width: 480px) {
+    .calculator {
+        padding: 15px;
+    }
+    
+    #display {
+        font-size: 2em;
+        padding: 15px;
+    }
+    
+    .btn {
+        padding: 12px;
+        font-size: 1em;
+    }
+    
+    .button-group {
+        gap: 8px;
+    }
+}
+
+/* ============================================
+   CALCULATOR SCRIPT (Inline)
+   ============================================ */
+
+let display = document.getElementById('display');
+let expression = '';
+
+function appendNumber(num) {
+    expression += num;
+    updateDisplay();
+}
+
+function appendOperator(op) {
+    if (expression && !isOperator(expression[expression.length - 1])) {
+        expression += op;
+        updateDisplay();
+    }
+}
+
+function appendDecimal() {
+    const lastNumber = getLastNumber();
+    if (!lastNumber.includes('.')) {
+        expression += '.';
+        updateDisplay();
+    }
+}
+
+function appendFunction(func) {
+    expression += func;
+    updateDisplay();
+}
+
+function appendParenthesis(paren) {
+    expression += paren;
+    updateDisplay();
+}
+
+function appendConstant(constant) {
+    expression += constant;
+    updateDisplay();
+}
+
+function toggleNegative() {
+    if (expression) {
+        const lastNumber = getLastNumber();
+        if (lastNumber) {
+            const negNumber = lastNumber.startsWith('-') 
+                ? lastNumber.substring(1) 
+                : '-' + lastNumber;
+            expression = expression.substring(0, expression.lastIndexOf(lastNumber)) + negNumber;
+            updateDisplay();
+        }
+    }
+}
+
+function calculatePercentage() {
+    try {
+        const result = eval(expression) / 100;
+        expression = result.toString();
+        updateDisplay();
+    } catch (error) {
+        display.value = 'Error';
+    }
+}
+
+function deleteLast() {
+    expression = expression.slice(0, -1);
+    updateDisplay();
+}
+
+function clearDisplay() {
+    expression = '';
+    display.value = '0';
+}
+
+function updateDisplay() {
+    display.value = expression || '0';
+}
+
+function getLastNumber() {
+    const operators = /[+\-*/()]/;
+    let lastNumber = '';
+    for (let i = expression.length - 1; i >= 0; i--) {
+        if (operators.test(expression[i])) {
+            break;
+        }
+        lastNumber = expression[i] + lastNumber;
+    }
+    return lastNumber;
+}
+
+function isOperator(char) {
+    return /[+\-*/]/.test(char);
+}
+
+function calculate() {
+    try {
+        // Replace mathematical symbols with JavaScript operators
+        let calc = expression
+            .replace(/÷/g, '/')
+            .replace(/×/g, '*')
+            .replace(/−/g, '-')
+            .replace(/√/g, 'Math.sqrt')
+            .replace(/sin\(/g, 'Math.sin(')
+            .replace(/cos\(/g, 'Math.cos(')
+            .replace(/tan\(/g, 'Math.tan(')
+            .replace(/log\(/g, 'Math.log10(')
+            .replace(/pow\(/g, 'Math.pow(')
+            .replace(/cbrt\(/g, 'Math.cbrt(');
+        
+        // Convert degrees to radians for trigonometric functions
+        const result = eval(calc);
+        
+        // Format result to avoid floating point errors
+        expression = Math.round(result * 100000000) / 100000000;
+        display.value = expression;
+    } catch (error) {
+        display.value = 'Error';
+        expression = '';
+    }
+}
+
+// Allow keyboard input
+document.addEventListener('keydown', (e) => {
+    if (e.key >= '0' && e.key <= '9') {
+        appendNumber(e.key);
+    } else if (e.key === '.') {
+        appendDecimal();
+    } else if (e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/') {
+        appendOperator(e.key);
+    } else if (e.key === 'Enter' || e.key === '=') {
+        e.preventDefault();
+        calculate();
+    } else if (e.key === 'Backspace') {
+        deleteLast();
+    } else if (e.key === 'Escape') {
+        clearDisplay();
+    } else if (e.key === '(') {
+        appendParenthesis('(');
+    } else if (e.key === ')') {
+        appendParenthesis(')');
+    }
+});
+
+// Initialize display
+updateDisplay();
