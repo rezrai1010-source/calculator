@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculator with LinguaFusion Font</title>
+    <title>Scientific Calculator with LinguaFusion Font</title>
     <link rel="stylesheet" href="calculator.css">
 </head>
 <body>
@@ -13,32 +13,54 @@
                 <input type="text" id="display" value="0" readonly>
             </div>
             <div class="button-group">
+                <!-- Scientific Functions Row 1 -->
+                <button class="btn advanced-btn" onclick="appendFunction('sin(')">sin</button>
+                <button class="btn advanced-btn" onclick="appendFunction('cos(')">cos</button>
+                <button class="btn advanced-btn" onclick="appendFunction('tan(')">tan</button>
+                <button class="btn advanced-btn" onclick="appendConstant('Math.PI')">π</button>
+                
+                <!-- Scientific Functions Row 2 -->
+                <button class="btn advanced-btn" onclick="appendFunction('Math.sqrt(')">√</button>
+                <button class="btn advanced-btn" onclick="appendFunction('Math.pow(')">x^y</button>
+                <button class="btn advanced-btn" onclick="appendFunction('Math.log10(')">log</button>
+                <button class="btn advanced-btn" onclick="appendConstant('Math.E')">e</button>
+                
+                <!-- Scientific Functions Row 3 -->
+                <button class="btn advanced-btn" onclick="appendParenthesis('(')">(</button>
+                <button class="btn advanced-btn" onclick="appendParenthesis(')')">)</button>
+                <button class="btn advanced-btn" onclick="calculatePercentage()">%</button>
+                <button class="btn function-btn" onclick="appendOperator('/')">÷</button>
+                
+                <!-- Number Pad Row 1 -->
                 <button class="btn number-btn" onclick="appendNumber('7')">7</button>
                 <button class="btn number-btn" onclick="appendNumber('8')">8</button>
                 <button class="btn number-btn" onclick="appendNumber('9')">9</button>
-                <button class="btn function-btn" onclick="appendOperator('/')">÷</button>
+                <button class="btn function-btn" onclick="appendOperator('*')">×</button>
                 
+                <!-- Number Pad Row 2 -->
                 <button class="btn number-btn" onclick="appendNumber('4')">4</button>
                 <button class="btn number-btn" onclick="appendNumber('5')">5</button>
                 <button class="btn number-btn" onclick="appendNumber('6')">6</button>
-                <button class="btn function-btn" onclick="appendOperator('*')">×</button>
+                <button class="btn function-btn" onclick="appendOperator('-')">−</button>
                 
+                <!-- Number Pad Row 3 -->
                 <button class="btn number-btn" onclick="appendNumber('1')">1</button>
                 <button class="btn number-btn" onclick="appendNumber('2')">2</button>
                 <button class="btn number-btn" onclick="appendNumber('3')">3</button>
-                <button class="btn function-btn" onclick="appendOperator('-')">−</button>
-                
-                <button class="btn number-btn" onclick="appendNumber('0')">0</button>
-                <button class="btn number-btn" onclick="appendDecimal()">.</button>
-                <button class="btn function-btn" onclick="toggleNegative()">+/−</button>
                 <button class="btn function-btn" onclick="appendOperator('+')">+</button>
                 
-                <button class="btn equals-btn" onclick="calculate()">=</button>
+                <!-- Number Pad Row 4 -->
+                <button class="btn number-btn" onclick="appendNumber('0')" style="grid-column: span 2;">0</button>
+                <button class="btn number-btn" onclick="appendDecimal()">.</button>
+                <button class="btn function-btn" onclick="toggleNegative()">+/−</button>
+                
+                <!-- Control Buttons -->
+                <button class="btn equals-btn" onclick="calculate()" style="grid-column: span 2;">=</button>
                 <button class="btn function-btn" style="grid-column: span 2;" onclick="clearDisplay()">C</button>
                 <button class="btn function-btn" onclick="deleteLast()">⌫</button>
             </div>
         </div>
-        <div class="info">Calculator with LinguaFusion Font</div>
+        <div class="info">Scientific Calculator with LinguaFusion Font</div>
     </div>
 
     <script src="calculator.js"></script>
